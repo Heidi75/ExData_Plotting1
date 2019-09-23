@@ -14,11 +14,12 @@ head(Data)
 #plot Energy submetering over Datetime
 #3 columns Sub_metering_1 ( color black ) Sub_metering_2 ( color red) Sub_metering_3 (color blue) 
 #Generic
+?legend
 
 plot(Data$Datetime,Data$Sub_metering_1, ylab="Energy Submetering", xlab="", type="l")
 lines(Data$Datetime,Data$Sub_metering_2, col = 'Red')
 lines(Data$Datetime,Data$Sub_metering_3, col = 'Blue')
-legend("topright", col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lwd = 1)
+legend("topright", col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 
 
 #Same graph in ggplot
