@@ -12,6 +12,7 @@ str(Data)
 
 hist(Data$Global_active_power, col = "red", main = paste("Global Active Power"), xlab = "Global Active Power (kilowatts)")
 
+#2nd way to make it with ggplot2
 ggplot(Data, aes(x = Global_active_power)) + 
   geom_histogram(fill = "red")+
   ggtitle("Global Active Power")+
