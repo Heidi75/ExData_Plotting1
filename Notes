@@ -1,0 +1,57 @@
+#When loading the dataset into R, please consider the following:
+
+#The dataset has 2,075,259 rows and 9 columns. First calculate a rough estimate of how much memory the dataset will require in memory before reading into R. Make sure your computer has enough memory (most modern computers should be fine).
+#We will only be using data from the dates 2007-02-01 and 2007-02-02. One alternative is to read the data from just those dates rather than reading in the entire dataset and subsetting to those dates.
+
+File<- file("household_power_consumption.txt")
+Data<- read.table(text = grep("^[1,2]/2/2007", readLines(File), value = TRUE), col.names = c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", "Global_intensity", "Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), sep = ";", header = TRUE)
+
+#You may find it useful to convert the Date and Time variables to Date/Time classes in R using the strptime()  and as.Date() functions.
+
+Data$Time <- strptime(Data$Time, %H:%M:%S")
+Data$Date <- as.Date(Data$Date, $M:$D:$Y)
+> Data
+                 time speed
+1 2014-01-23 14:28:21   2.0
+2 2014-01-23 14:28:55   2.2
+3 2014-01-23 14:29:02   3.4
+4 2014-01-23 14:31:18   5.5
+> myData$time[1]
+[1] "2014-01-23 14:28:21"
+> typeof(myData$time[1])
+[1] "list"
+> myData$time[1][[2]]
+[1] 28
+
+https://www.stat.berkeley.edu/~s133/dates.html
+
+https://www.cyclismo.org/tutorial/R/time.html
+
+after using str(Data) I find out the Date and Time are being read in as Factors so while reading in the file I Have to put
+stringsAsFactors=FALSE
+and this for the "?
+na.strings = "?"
+
+File<- file("household_power_consumption.txt")
+DataFrame <- read.table(text = grep("^[1,2]/2/2007", readLines(File), value = TRUE), col.names = c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", "Global_intensity", "Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), sep = ";", na.strings = "?", header = TRUE, stringsAsFactors=FALSE )
+str(DataFrame)
+Now Date and Time read as characters
+
+File<- file("household_power_consumption.txt")
+Data <- read.table(text = grep("^[1,2]/2/2007", readLines(File), value = TRUE), col.names = c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", "Global_intensity", "Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), sep = ";", na.strings = "?", header = TRUE, stringsAsFactors=FALSE )
+
+datetime <- paste(as.Date(Data$Date), Data$Time)
+Data$Datetime <- as.POSIXct(datetime)
+
+str(Data)
+'data.frame':	2879 obs. of  10 variables:
+ $ Date                 : chr  "1/2/2007" "1/2/2007" "1/2/2007" "1/2/2007" ...
+ $ Time                 : chr  "00:01:00" "00:02:00" "00:03:00" "00:04:00" ...
+ $ Global_active_power  : num  0.326 0.324 0.324 0.322 0.32 0.32 0.32 0.32 0.236 0.226 ...
+ $ Global_reactive_power: num  0.13 0.132 0.134 0.13 0.126 0.126 0.126 0.128 0 0 ...
+ $ Voltage              : num  243 244 244 243 242 ...
+ $ Global_intensity     : num  1.4 1.4 1.4 1.4 1.4 1.4 1.4 1.4 1 1 ...
+ $ Sub_metering_1       : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ Sub_metering_2       : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ Sub_metering_3       : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ Datetime             : POSIXct, format: "0001-02-20 00:01:00" "0001-02-20 00:02:00" "0001-02-20 00:03:00" ...
